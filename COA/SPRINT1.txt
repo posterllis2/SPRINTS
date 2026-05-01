@@ -10,25 +10,25 @@ section .text
 
 _start:
     ; 1. Inicialização de Registradores
-    mov ebx, [limite_carga]         ; EBX guarda o limite (100)
-    mov ecx, 0                      ; ECX será o nosso sensor (0%)
+    mov ebx, [limite_carga]         ; Guarda o limite (100)
+    mov ecx, 0                      ; Nosso sensor (0%)
 
 loop_controle:
     ; 2. Simulação de leitura de hardware
     add ecx, 10                     ; Aumenta 10% a cada ciclo
 
     ; 3. Comparação
-    cmp ecx, ebx                    ; Compara sensor (ECX) com limite (EBX)
+    cmp ecx, ebx                    
     jge carga_finalizada            ; Se for maior ou igual a 100, pula para o fim
 
-    ; 4. Exibir "Carregando..." (Syscall de escrita no Linux)
-    mov eax, 4                      ; System call number para sys_write
-    mov ebx, 1                      ; File descriptor 1 (stdout)
-    mov ecx, msg_carregando         ; Ponteiro para a mensagem
-    mov edx, len_carregando         ; Tamanho da mensagem
-    int 0x80                        ; Chama o kernel
+    ; 4. Exibir "Carregando..." 
+    mov eax, 4                      
+    mov ebx, 1                     
+    mov ecx, msg_carregando         
+    mov edx, len_carregando         
+    int 0x80                        
     
-    ; Recupera o valor do sensor que estava no ECX (o syscall muda o ECX)
+    ; Recupera o valor do sensor que estava no ECX 
     ; Para simplificar no primeiro semestre, vamos simular o sensor voltando
     mov ecx, [valor_atual]          ; (Apenas ilustrativo)
     
@@ -37,16 +37,16 @@ loop_controle:
 
 carga_finalizada:
     ; Ação de Desligamento (Sustentabilidade)
-    mov eax, 4                      ; sys_write
-    mov ebx, 1                      ; stdout
-    mov ecx, msg_concluido          ; mensagem final
-    mov edx, len_concluido          ; tamanho
+    mov eax, 4                      
+    mov ebx, 1                      
+    mov ecx, msg_concluido          
+    mov edx, len_concluido          
     int 0x80
 
 encerra_processamento:
     ; Finaliza o programa
-    mov eax, 1                      ; System call para sys_exit
-    xor ebx, ebx                    ; Retorno 0 (sucesso)
+    mov eax, 1                      
+    xor ebx, ebx                    
     int 0x80
 
 section .bss
